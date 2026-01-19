@@ -2,16 +2,18 @@ name: RainKinetic
 
 on:
   schedule:
-    - cron: '*/10 * * * *'
-  workflow_dispatch:
+    - cron: '*/10 * * * *'  # 每10分鐘
+  workflow_dispatch:         # 可以手動觸發
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        persist-credentials: false  # <- 這行是關鍵
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -24,7 +26,7 @@ jobs:
     - name: Run image processing
       run: python run.py
 
-    - name: Commit output
+    - name: Commit and push
       run: |
         git config user.name "github-actions"
         git config user.email "actions@github.com"
