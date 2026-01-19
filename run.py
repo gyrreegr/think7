@@ -1,7 +1,7 @@
 import requests
 from PIL import Image
 from io import BytesIO
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 def round_to_10min(dt):
     """將時間四捨五入到最近的10分鐘"""
@@ -74,3 +74,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
