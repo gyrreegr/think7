@@ -1,4 +1,4 @@
-name: sean
+name: RainKinetic
 
 on:
   schedule:
@@ -30,4 +30,4 @@ jobs:
         git config user.email "actions@github.com"
         git add rainkineticphoto.png
         git commit -m "Update image" || echo "No changes"
-        git push
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
