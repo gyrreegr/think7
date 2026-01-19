@@ -1,26 +1,27 @@
-name: Update image
+name: Auto Generate Image
 
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "*/10 * * * *"   # 每 10 分鐘
   workflow_dispatch:
 
 permissions:
-  contents: write   # ←←← 沒這行一定 403
+  contents: write   # ⭐ 必開，不然一定 403
 
 jobs:
-  update:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: true   # ← 保留 GITHUB_TOKEN
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run script
         run: python run.py
@@ -28,7 +29,7 @@ jobs:
       - name: Commit & push
         run: |
           git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.email "actions@github.com"
           git add rainkineticphoto.png
-          git commit -m "Update image" || exit 0
+          git commit -m "auto update image" || exit 0
           git push
