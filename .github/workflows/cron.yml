@@ -2,29 +2,25 @@ name: RainKinetic
 
 on:
   schedule:
-    - cron: '*/10 * * * *' # 每 10 分鐘
-  workflow_dispatch:        # 可手動觸發
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
-          persist-credentials: false  # <- 必加
+          persist-credentials: false  # 允許我們使用 token push
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt
 
-      - name: Run image processing
-        run: python run.py
+      - run: python run.py
 
       - name: Commit and push
         run: |
