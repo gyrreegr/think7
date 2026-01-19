@@ -10,7 +10,8 @@ def round_to_10min(dt):
 
 def get_latest_image_url():
     """獲取最新的圖片URL"""
-    now = datetime.now()
+    UTC8 = timezone(timedelta(hours=8))
+    now = datetime.now(UTC8)
     current_time = round_to_10min(now)
     start_time = current_time - timedelta(minutes=30)
     
@@ -71,4 +72,5 @@ def main():
         result.save('rainkineticphoto.png')
 
 if __name__ == "__main__":
+
     main()
