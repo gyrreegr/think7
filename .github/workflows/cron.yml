@@ -1,31 +1,34 @@
-name: RainKinetic
+name: Update image
 
 on:
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: "*/10 * * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write   # ←←← 沒這行一定 403
+
 jobs:
-  build:
+  update:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          persist-credentials: false  # 允許我們使用 token push
+          persist-credentials: true   # ← 保留 GITHUB_TOKEN
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
-      - run: pip install -r requirements.txt
+      - name: Run script
+        run: python run.py
 
-      - run: python run.py
-
-      - name: Commit and push
+      - name: Commit & push
         run: |
           git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          git config user.email "github-actions@github.com"
           git add rainkineticphoto.png
-          git commit -m "Update image" || echo "No changes"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+          git commit -m "Update image" || exit 0
+          git push
