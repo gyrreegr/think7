@@ -32,4 +32,4 @@ jobs:
           git config user.email "actions@github.com"
           git add rainkineticphoto.png
           git commit -m "auto update image" || exit 0
-          git push
+          git push --force
